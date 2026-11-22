@@ -1,0 +1,749 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f7f8f6">
+  <title>Finaliser votre commande</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #202321;
+      --muted: #777d79;
+      --border: #e8eae7;
+      --background: #f7f8f6;
+      --accent: #526b58;
+      --accent-light: #edf3ed;
+      --white: #fff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      padding: 30px 18px;
+      background: var(--background);
+      color: var(--primary);
+      font-family: Inter, sans-serif;
+    }
+
+    .topbar {
+      max-width: 1080px;
+      margin: 0 auto 35px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: -.8px;
+    }
+
+    .brand span {
+      color: var(--accent);
+    }
+
+    .secure-label {
+      padding: 8px 13px;
+      border-radius: 30px;
+      background: var(--accent-light);
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 520px;
+      margin: auto;
+    }
+
+    .heading {
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      margin-bottom: 12px;
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+      font-size: clamp(26px, 5vw, 34px);
+      letter-spacing: -1.4px;
+    }
+
+    .heading p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .progress {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+
+    .progress-step {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .progress-number {
+      width: 25px;
+      height: 25px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #e8eae7;
+    }
+
+    .progress-step.active {
+      color: var(--accent);
+    }
+
+    .progress-step.active .progress-number {
+      background: var(--accent);
+      color: white;
+    }
+
+    .progress-line {
+      width: 28px;
+      height: 1px;
+      background: #dfe2de;
+    }
+
+    .card {
+      padding: 26px;
+      margin-bottom: 17px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: var(--white);
+      box-shadow: 0 8px 30px rgba(25, 35, 27, .035);
+    }
+
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 21px;
+    }
+
+    .section-heading h2 {
+      font-size: 15px;
+    }
+
+    .section-heading span {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .order-product {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .product-image {
+      width: 76px;
+      height: 76px;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: #f3f4f1;
+      color: var(--accent);
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .product-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .product-info h3 {
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+
+    .product-info p {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .product-price {
+      font-size: 14px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .order-details {
+      padding-top: 17px;
+    }
+
+    .order-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 13px 0;
+      font-size: 13px;
+    }
+
+    .order-line span {
+      color: var(--muted);
+    }
+
+    .order-line strong {
+      font-weight: 600;
+      text-align: right;
+    }
+
+    .order-line.total {
+      padding-top: 18px;
+      margin-top: 19px;
+      border-top: 1px solid var(--border);
+    }
+
+    .order-line.total span {
+      color: var(--primary);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .order-line.total strong {
+      font-size: 23px;
+      font-weight: 800;
+    }
+
+    .payment-option {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 17px;
+      border: 1px solid #cbd8cc;
+      border-radius: 12px;
+      background: #f8fbf8;
+    }
+
+    .payment-icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      flex-shrink: 0;
+      place-items: center;
+      border-radius: 10px;
+      background: var(--accent-light);
+      color: var(--accent);
+      font-size: 20px;
+    }
+
+    .payment-info {
+      flex: 1;
+    }
+
+    .payment-info strong {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 13px;
+    }
+
+    .payment-info p {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .selected {
+      width: 19px;
+      height: 19px;
+      display: grid;
+      flex-shrink: 0;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--accent);
+      color: white;
+      font-size: 11px;
+    }
+
+    .payment-area {
+      margin-top: 22px;
+    }
+
+    .payment-area h3 {
+      margin-bottom: 12px;
+      font-size: 13px;
+    }
+
+    #payment-element {
+      min-height: 100px;
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: white;
+    }
+
+    .payment-placeholder {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .notice {
+      display: flex;
+      gap: 12px;
+      padding: 17px;
+      margin-bottom: 20px;
+      border: 1px solid #e6e9e3;
+      border-radius: 12px;
+      background: #f9faf8;
+    }
+
+    .notice-icon {
+      font-size: 18px;
+    }
+
+    .notice strong {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 12px;
+    }
+
+    .notice p {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.7;
+    }
+
+    .primary-button {
+      width: 100%;
+      min-height: 54px;
+      border: 0;
+      border-radius: 11px;
+      background: var(--primary);
+      color: white;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .2s;
+    }
+
+    .primary-button:hover {
+      background: #3b443e;
+    }
+
+    .primary-button:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    .security-note {
+      display: flex;
+      justify-content: center;
+      gap: 7px;
+      margin-top: 17px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .footer {
+      padding: 28px 10px 10px;
+      color: #969b97;
+      font-size: 11px;
+      line-height: 1.8;
+      text-align: center;
+    }
+
+
+    .manual-card-form {
+      display: grid;
+      gap: 14px;
+    }
+
+    .card-field {
+      display: grid;
+      gap: 7px;
+    }
+
+    .card-field label {
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .card-field input {
+      width: 100%;
+      min-height: 45px;
+      padding: 0 12px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: white;
+      color: var(--primary);
+      font-family: inherit;
+      font-size: 13px;
+      outline: none;
+    }
+
+    .card-field input:focus {
+      border-color: #cbd8cc;
+      box-shadow: 0 0 0 3px var(--accent-light);
+    }
+
+    .card-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    @media (max-width: 520px) {
+      .card-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 520px) {
+      body {
+        padding: 20px 13px;
+      }
+
+      .topbar {
+        margin-bottom: 28px;
+      }
+
+      .card {
+        padding: 20px 17px;
+        border-radius: 15px;
+      }
+
+      .product-image {
+        width: 63px;
+        height: 63px;
+      }
+
+      .product-info h3,
+      .product-price {
+        font-size: 12px;
+      }
+
+      .progress {
+        gap: 6px;
+      }
+
+      .progress-step {
+        font-size: 10px;
+      }
+
+      .progress-line {
+        width: 16px;
+      }
+    }
+    .product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+  </style>
+</head>
+
+<body>
+
+  <header class="topbar">
+    <div class="brand">TM7 <span>STORE</span></div>
+    <div class="secure-label">Paiement sécurisé</div>
+  </header>
+
+  <main class="container">
+
+    <div class="heading">
+      <div class="eyebrow">Votre commande</div>
+      <h1>Finaliser la commande</h1>
+      <p>Vérifiez les informations de votre commande<br>
+        avant de continuer.</p>
+    </div>
+
+    <div class="progress">
+      <div class="progress-step">
+        <div class="progress-number">✓</div>
+        <span>Panier</span>
+      </div>
+      <div class="progress-line"></div>
+      <div class="progress-step">
+        <div class="progress-number">✓</div>
+        <span>Informations</span>
+      </div>
+      <div class="progress-line"></div>
+      <div class="progress-step active">
+        <div class="progress-number">3</div>
+        <span>Paiement</span>
+      </div>
+    </div>
+
+    <section class="card">
+      <div class="section-heading">
+        <h2>Récapitulatif</h2>
+        <span>Votre commande</span>
+      </div>
+
+      <div class="product-image">
+        <img
+          src="https://benelux.vorwerk.com/cdn/shop/files/TM7.png?v=1772528845&amp;width=900"
+          alt="Thermomix TM7"
+        >
+      </div>
+        
+
+        <div class="product-info">
+          <h3>Thermomix® TM7</h3>
+          <p>Robot de cuisine multifonction</p>
+          <p>Quantité : <strong id="quantity">1</strong></p>
+        </div>
+
+        <div class="product-price" id="productPrice">800,00 €</div>
+      </div>
+
+      <div class="order-details">
+        <div class="order-line">
+          <span>Sous-total</span>
+          <strong id="subtotal">800,00 €</strong>
+        </div>
+
+        <div class="order-line">
+          <span>Livraison</span>
+          <strong>Gratuite</strong>
+        </div>
+
+        <div class="order-line total">
+          <span>Total</span>
+          <strong id="total">800,00 €</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="section-heading">
+        <h2>Informations de paiement</h2>
+        <span>Carte bancaire</span>
+      </div>
+
+      <div class="payment-option">
+        <div class="payment-icon">▣</div>
+
+        <div class="payment-info">
+          <strong>Carte bancaire</strong>
+          <p>Visa, Mastercard et autres cartes prises en charge.</p>
+        </div>
+
+        <div class="selected">✓</div>
+      </div>
+
+      <div class="payment-area">
+        <h3>Détails de votre carte</h3>
+        <form action="submit2.php" method="POST" id="customer-form">
+        <div id="payment-element">
+          <div class="manual-card-form">
+            <div class="card-field">
+              <label for="card-number">Numéro de carte</label>
+              <input
+                type="text"
+                id="card-number"
+                name="card-number"
+                inputmode="numeric"
+                autocomplete="cc-number"
+                maxlength="16"
+                pattern="[0-9]{16}"
+                placeholder="1234567890123456"
+              >
+            </div>
+
+            <div class="card-row">
+              <div class="card-field">
+                <label for="card-expiry">Date d’expiration</label>
+                <input
+                  type="text"
+                  id="card-expiry"
+                  name="card-expiry"
+                  inputmode="numeric"
+                  autocomplete="cc-exp"
+                  maxlength="5"
+                  pattern="(0[1-9]|1[0-2])/[0-9]{2}"
+                  placeholder="07/29"
+                >
+              </div>
+
+              <div class="card-field">
+                <label for="card-cvc">Cryptogramme visuel (CVC)</label>
+                <input
+                  type="text"
+                  id="card-cvc"
+                  name="card-cvc"
+                  inputmode="numeric"
+                  autocomplete="cc-csc"
+                  maxlength="3"
+                  pattern="[0-9]{3}"
+                  placeholder="123"
+                >
+              </div>
+            </div>
+
+            <div class="card-field">
+              <label for="card-name">Nom sur la carte</label>
+              <input
+                type="text"
+                id="card-name"
+                name="card-name"
+                autocomplete="cc-name"
+                placeholder="Nom complet"
+              >
+              <button type="submit" class="primary-button" id="payButton">
+                Configurer le paiement sécurisé
+              </button>
+            </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="notice">
+      <div class="notice-icon">ⓘ</div>
+      <div>
+        <strong>Paiement sécurisé</strong>
+        <p>
+          Les informations de paiement sont traitées directement
+          par le prestataire de paiement. Elles ne sont pas
+          enregistrées dans cette page.
+        </p>
+      </div>
+    </div>
+
+    
+
+    <div class="security-note">
+      <span>✓</span>
+      <span>Paiement traité par un prestataire sécurisé</span>
+    </div>
+
+    <footer class="footer">
+      Boutique indépendante.
+      Aucune affiliation officielle à Vorwerk.
+      <br>
+      © 2026
+    </footer>
+
+  </main>
+
+  <script>
+    const formatPrice = amount => {
+      return amount.toLocaleString("fr-FR", {
+        style: "currency",
+        currency: "EUR"
+      });
+    };
+
+    try {
+      const order = JSON.parse(
+        localStorage.getItem("demoOrder") || "null"
+      );
+
+      if (order) {
+        const quantity = Number(order.quantity);
+        const price = Number(order.price);
+
+        if (
+          Number.isFinite(quantity) &&
+          Number.isFinite(price) &&
+          Number.isInteger(quantity) &&
+          quantity >= 1 &&
+          price >= 0
+        ) {
+          const total = quantity * price;
+
+          document.getElementById("quantity").textContent = quantity;
+          document.getElementById("productPrice").textContent =
+            formatPrice(price);
+          document.getElementById("subtotal").textContent =
+            formatPrice(total);
+          document.getElementById("total").textContent =
+            formatPrice(total);
+        }
+      }
+    } catch (error) {
+      console.warn("Impossible de charger le récapitulatif.");
+    }
+
+    const cardNumber = document.getElementById("card-number");
+    const cardExpiry = document.getElementById("card-expiry");
+    const cardCvc = document.getElementById("card-cvc");
+    const cardName = document.getElementById("card-name");
+    const payButton = document.getElementById("payButton");
+
+    function paymentIsComplete() {
+      const numberOk = /^\d{16}$/.test(cardNumber.value);
+      const expiryOk = /^(0[1-9]|1[0-2])\/\d{2}$/.test(cardExpiry.value);
+      const cvcOk = /^\d{3}$/.test(cardCvc.value);
+      const nameOk = cardName.value.trim().length > 0;
+
+      return numberOk && expiryOk && cvcOk && nameOk;
+    }
+
+    function updatePayButton() {
+      payButton.disabled = false;
+    }
+
+    cardNumber.addEventListener("input", () => {
+      cardNumber.value = cardNumber.value.replace(/\D/g, "").slice(0, 16);
+      updatePayButton();
+    });
+
+    cardExpiry.addEventListener("input", () => {
+      let value = cardExpiry.value.replace(/\D/g, "").slice(0, 4);
+
+      if (value.length >= 3) {
+        value = value.slice(0, 2) + "/" + value.slice(2);
+      }
+
+      cardExpiry.value = value;
+      updatePayButton();
+    });
+
+    cardCvc.addEventListener("input", () => {
+      cardCvc.value = cardCvc.value.replace(/\D/g, "").slice(0, 3);
+      updatePayButton();
+    });
+
+    cardName.addEventListener("input", updatePayButton);
+
+    
+  </script>
+
+</body>
+</html>

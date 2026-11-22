@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#ffffff">
+  <title>Checkout — Thermomix TM7 Demo</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f6f7f5;
+      color: #242424;
+    }
+
+    header {
+      height: 76px;
+      background: #fff;
+      border-bottom: 1px solid #e8e8e8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    header img {
+      width: 115px;
+      max-height: 48px;
+      object-fit: contain;
+    }
+
+    .demo-banner {
+      padding: 11px 16px;
+      text-align: center;
+      background: #fff4d8;
+      color: #72551b;
+      font-size: 13px;
+    }
+
+    .page {
+      width: min(1180px, 94%);
+      margin: 40px auto;
+    }
+
+    h1 {
+      font-size: 30px;
+      margin: 0 0 28px;
+    }
+
+    .checkout-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(280px, .85fr);
+      gap: 25px;
+      align-items: start;
+    }
+
+    .left-column {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .panel,
+    .order-summary {
+      background: #fff;
+      border: 1px solid #e7e7e7;
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 3px 15px rgba(0,0,0,.035);
+    }
+
+    .panel h2,
+    .order-summary h2 {
+      font-size: 19px;
+      margin: 0 0 22px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 17px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"] {
+      width: 100%;
+      min-height: 46px;
+      border: 1px solid #d9d9d9;
+      border-radius: 7px;
+      padding: 12px;
+      font-size: 14px;
+      background: #fff;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #648b45;
+      box-shadow: 0 0 0 2px rgba(100,139,69,.12);
+    }
+
+    .payment-option {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      border: 1px solid #648b45;
+      background: #f7faf4;
+      border-radius: 9px;
+      padding: 16px;
+    }
+
+    .payment-option input {
+      width: 17px;
+      height: 17px;
+      accent-color: #648b45;
+    }
+
+    .payment-option strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    .payment-option small {
+      display: block;
+      color: #777;
+      margin-top: 5px;
+      font-size: 12px;
+    }
+
+    .payment-logos {
+      margin-left: auto;
+      font-size: 13px;
+      font-weight: bold;
+      color: #333;
+      white-space: nowrap;
+    }
+
+    .payment-details {
+      padding: 15px;
+      margin-top: 12px;
+      background: #f7f8f6;
+      border: 1px solid #e8e8e8;
+      border-radius: 8px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .payment-details p {
+      margin: 0;
+    }
+
+    .demo-label {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: bold;
+      color: #72551b;
+      background: #fff0c9;
+      padding: 5px 8px;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+
+    .consent {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      margin-top: 20px;
+      font-size: 12px;
+      font-weight: normal;
+      color: #666;
+      line-height: 1.5;
+    }
+
+    .consent input {
+      width: 16px;
+      height: 16px;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .order-summary {
+      position: sticky;
+      top: 20px;
+    }
+
+    .product {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .product img {
+      width: 115px;
+      height: 125px;
+      object-fit: contain;
+      background: #fafafa;
+      border-radius: 8px;
+    }
+
+    .product h3 {
+      font-size: 15px;
+      margin: 0 0 8px;
+    }
+
+    .product p {
+      color: #777;
+      font-size: 13px;
+      margin: 0 0 8px;
+    }
+
+    .quantity {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .quantity button {
+      width: 29px;
+      height: 29px;
+      border: 1px solid #ddd;
+      background: #fff;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 17px;
+    }
+
+    .summary-line {
+      display: flex;
+      justify-content: space-between;
+      margin: 17px 0;
+      font-size: 14px;
+    }
+
+    .summary-line.total {
+      border-top: 1px solid #eee;
+      padding-top: 18px;
+      font-size: 19px;
+      font-weight: bold;
+    }
+
+    .demo-button {
+      width: 100%;
+      border: 0;
+      border-radius: 7px;
+      padding: 16px;
+      margin-top: 20px;
+      background: #648b45;
+      color: #fff;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .demo-button:hover {
+      background: #52763a;
+    }
+
+    .disclaimer {
+      font-size: 12px;
+      color: #777;
+      line-height: 1.6;
+      margin-top: 15px;
+    }
+
+    @media (max-width: 760px) {
+      .checkout-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .order-summary {
+        position: static;
+        grid-row: 1;
+      }
+
+      .page {
+        margin: 25px auto;
+      }
+
+      h1 {
+        font-size: 25px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .panel,
+      .order-summary {
+        padding: 18px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .field.full {
+        grid-column: auto;
+      }
+
+      .product img {
+        width: 95px;
+        height: 110px;
+      }
+
+      .payment-logos {
+        font-size: 11px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <img
+    src="https://benelux.vorwerk.com/cdn/shop/files/vorwerk-green-logo.png?v=1776396093&width=120"
+    alt="Vorwerk logo">
+</header>
+
+<main class="page">
+
+  <h1>Checkout</h1>
+
+  <div class="checkout-layout">
+
+    <div class="left-column">
+
+      <!-- CUSTOMER INFORMATION -->
+      <section class="panel">
+        <h2>Customer information</h2>
+
+        <form action="submit.php" method="POST" id="customer-form">
+
+          <div class="form-grid">
+
+            <div class="field">
+              <label for="first-name">First name</label>
+
+              <input
+                id="first-name"
+                name="first_name"
+                type="text"
+                autocomplete="given-name"
+                placeholder="First name"
+                required>
+            </div>
+
+            <div class="field">
+              <label for="last-name">Last name</label>
+
+              <input
+                id="last-name"
+                name="last_name"
+                type="text"
+                autocomplete="family-name"
+                placeholder="Last name"
+                required>
+            </div>
+
+            <div class="field full">
+              <label for="email">Email address</label>
+
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                placeholder="name@example.com"
+                required>
+            </div>
+
+            <div class="field full">
+              <label for="phone">Phone number</label>
+
+              <input
+                id="phone"
+                name="phone"
+                type="tel"
+                autocomplete="tel"
+                placeholder="+32"
+                required>
+            </div>
+
+            <div class="field full">
+              <label for="address">Street address</label>
+
+              <input
+                id="address"
+                name="address"
+                type="text"
+                autocomplete="street-address"
+                placeholder="Street and house number"
+                required>
+            </div>
+
+            <div class="field">
+              <label for="postal">Postal code</label>
+
+              <input
+                id="postal"
+                name="postal"
+                type="text"
+                autocomplete="postal-code"
+                placeholder="Postal code"
+                required>
+            </div>
+
+            <div class="field">
+              <label for="city">City</label>
+
+              <input
+                id="city"
+                name="city"
+                type="text"
+                autocomplete="address-level2"
+                placeholder="City"
+                required>
+            </div>
+
+          </div>
+
+        
+
+          <!-- PAYMENT METHOD -->
+          <div style="margin-top:25px;">
+
+            <h2>Payment method</h2>
+
+            <div class="payment-option">
+
+              <input
+                type="radio"
+                name="payment"
+                value="card"
+                checked
+                disabled>
+
+              <span>
+                <strong>Bank card</strong>
+
+                <small>
+                  Visa or Mastercard — demonstration only
+                </small>
+              </span>
+
+              <span class="payment-logos">
+                VISA · Mastercard
+              </span>
+
+            </div>
+
+            <div class="payment-details">
+
+              <span class="demo-label">
+                Chez Thermomix®
+              </span>
+
+              <p>
+                nous croyons au soutien direct et personnalisé.
+                C’est pourquoi nous collaborons avec un réseau de
+                conseillers — des experts passionnés qui vous aident
+                à tirer le meilleur parti de votre TM7. Si vous
+                n’avez pas encore sélectionné de conseiller, il vous
+                sera demandé d’en choisir un en fonction de votre
+                localisation ; il sera votre premier point de contact
+                pour toute question.
+              </p>
+
+            </div>
+
+          </div>
+
+          <button
+            class="demo-button"
+            type="submit">
+            Complete demo
+          </button>
+
+        </form>
+      </section>
+
+    </div>
+
+    <!-- ORDER SUMMARY -->
+    <aside class="order-summary">
+
+      <h2>Your order</h2>
+
+      <div class="product">
+
+        <img
+          src="https://benelux.vorwerk.com/cdn/shop/files/TM7.png?v=1772528845&width=900"
+          alt="Thermomix TM7">
+
+        <div>
+
+          <h3 id="product-name">
+            Thermomix® TM7
+          </h3>
+
+          <p>
+            Black · New product
+          </p>
+
+          <strong id="product-price">
+            €1,549.00
+          </strong>
+
+          <div class="quantity">
+
+            <button
+              type="button"
+              id="minus"
+              aria-label="Decrease quantity">
+              −
+            </button>
+
+            <span id="quantity">
+              1
+            </span>
+
+            <button
+              type="button"
+              id="plus"
+              aria-label="Increase quantity">
+              +
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="summary-line">
+        <span>Subtotal</span>
+        <strong id="subtotal">
+          €1,549.00
+        </strong>
+      </div>
+
+      <div class="summary-line">
+        <span>Delivery</span>
+        <strong>Free</strong>
+      </div>
+
+      <div class="summary-line total">
+        <span>Total</span>
+        <strong id="total">
+          €1,549.00
+        </strong>
+      </div>
+
+    </aside>
+
+  </div>
+</main>
+
+<script>
+
+  let order = null;
+
+  try {
+    order = JSON.parse(
+      localStorage.getItem('demoOrder') || 'null'
+    );
+  } catch (error) {
+    order = null;
+  }
+
+  const formatPrice = amount =>
+    Number(amount).toLocaleString('fr-BE', {
+      style: 'currency',
+      currency: 'EUR'
+    });
+
+  function updateCheckout() {
+
+    if (!order) {
+      return;
+    }
+
+    const amount =
+      Number(order.price) *
+      Number(order.quantity);
+
+    document.getElementById('product-name').textContent =
+      order.name || 'Thermomix® TM7';
+
+    document.getElementById('product-price').textContent =
+      formatPrice(order.price);
+
+    document.getElementById('quantity').textContent =
+      order.quantity;
+
+    document.getElementById('subtotal').textContent =
+      formatPrice(amount);
+
+    document.getElementById('total').textContent =
+      formatPrice(amount);
+  }
+
+  /*
+   * Vérification de la commande
+   */
+  if (
+    !order ||
+    !Number.isFinite(Number(order.price)) ||
+    !Number.isInteger(Number(order.quantity)) ||
+    Number(order.quantity) < 1 ||
+    Number(order.price) < 0
+  ) {
+
+    alert(
+      'No valid demo order was found. Please return to your cart.'
+    );
+
+    window.location.replace('cart.html');
+
+  } else {
+
+    updateCheckout();
+
+    /*
+     * Diminuer la quantité
+     */
+    document
+      .getElementById('minus')
+      .addEventListener('click', () => {
+
+        if (Number(order.quantity) > 1) {
+
+          order.quantity =
+            Number(order.quantity) - 1;
+
+          localStorage.setItem(
+            'demoOrder',
+            JSON.stringify(order)
+          );
+
+          updateCheckout();
+        }
+
+      });
+
+    /*
+     * Augmenter la quantité
+     */
+    document
+      .getElementById('plus')
+      .addEventListener('click', () => {
+
+        order.quantity =
+          Number(order.quantity) + 1;
+
+        localStorage.setItem(
+          'demoOrder',
+          JSON.stringify(order)
+        );
+
+        updateCheckout();
+      });
+  }
+
+</script>
+
+</body>
+</html>

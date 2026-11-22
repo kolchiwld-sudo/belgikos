@@ -1,0 +1,237 @@
+
+/* ==============================
+   GLOBAL
+============================== */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    min-height: 100%;
+    margin: 0;
+}
+
+body {
+    font-family: 'Roboto', Arial, sans-serif;
+    background: #f3f5f8;
+    color: #263445;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 50px 16px;
+}
+
+/* ==============================
+   CREDIT CARD CONTAINER
+============================== */
+
+.credit-card {
+    width: 100%;
+    max-width: 400px;
+    min-height: 400px;
+    margin: 0 auto;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #e6eaf0;
+    border-radius: 14px;
+    box-shadow:
+        0 12px 35px rgba(25, 42, 70, 0.08),
+        0 2px 8px rgba(25, 42, 70, 0.03);
+}
+
+/* ==============================
+   HEADER
+============================== */
+
+.form-header {
+    min-height: 68px;
+    display: flex;
+    align-items: center;
+    padding: 0 28px;
+    background: #ffffff;
+    border-bottom: 1px solid #edf0f4;
+}
+
+.title {
+    margin: 0;
+    color: #253449;
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+}
+
+/* ==============================
+   FORM BODY
+============================== */
+
+.form-body {
+    padding: 28px;
+}
+
+/* ==============================
+   COMMON FIELDS
+============================== */
+
+.card-number,
+.cvv-input input,
+.month select,
+.year select {
+    width: 100%;
+    min-height: 48px;
+    padding: 0 15px;
+    border: 1px solid #dce2e9;
+    border-radius: 8px;
+    background-color: #ffffff;
+    color: #536273;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 400;
+    outline: none;
+    transition: border-color 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+/* ==============================
+   DEMO CARD DISPLAY
+============================== */
+
+.card-number {
+    margin-bottom: 18px;
+    background: #f9fafc;
+}
+
+/* ==============================
+   EXPIRATION DATE
+============================== */
+
+.month select,
+.year select {
+    width: 48%;
+    margin-bottom: 18px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: none;
+}
+
+.month {
+    float: left;
+    width: 48%;
+}
+
+.year {
+    float: right;
+    width: 48%;
+}
+
+/* ==============================
+   CVV DISPLAY
+============================== */
+
+.cvv-input {
+    float: left;
+    width: 48%;
+}
+
+.cvv-input input {
+    background: #f9fafc;
+}
+
+.cvv-details {
+    float: right;
+    width: 48%;
+    margin: 0;
+    color: #8793a1;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 17px;
+}
+
+.cvv-details p {
+    margin-top: 5px;
+}
+
+/* Clear floats */
+.form-body::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+/* ==============================
+   BUTTONS
+============================== */
+
+.paypal-btn,
+.proceed-btn {
+    display: block;
+    width: 100%;
+    min-height: 48px;
+    margin-top: 16px;
+    border: none;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.2s ease,
+                transform 0.2s ease;
+}
+
+.proceed-btn {
+    background: #1769e0;
+    color: #ffffff;
+}
+
+.proceed-btn:hover {
+    background: #1258c2;
+}
+
+.paypal-btn {
+    background: #0070ba;
+    color: #ffffff;
+}
+
+.paypal-btn:hover {
+    background: #005ea6;
+}
+
+.paypal-btn a,
+.proceed-btn a {
+    display: flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    color: inherit;
+    text-decoration: none;
+}
+
+/* ==============================
+   MOBILE RESPONSIVE
+============================== */
+
+@media (max-width: 480px) {
+    body {
+        padding: 20px 12px;
+    }
+
+    .credit-card {
+        max-width: 100%;
+        border-radius: 12px;
+    }
+
+    .form-header {
+        padding: 0 20px;
+    }
+
+    .form-body {
+        padding: 22px 20px;
+    }
+
+    .title {
+        font-size: 18px;
+    }
+}

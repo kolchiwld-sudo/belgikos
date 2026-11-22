@@ -1,0 +1,588 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="Démo indépendante de présentation du Thermomix TM7.">
+  <title> produit — Thermomix TM7</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      padding-top: 112px;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #242424;
+      background: #fff;
+    }
+
+    /* HEADER */
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      width: 100%;
+      background: #fff;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .navbar {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 112px;
+      padding: 12px 24px;
+    }
+
+    .logo {
+      display: block;
+      width: 110px;
+      height: auto;
+      object-fit: contain;
+      margin-bottom: 12px;
+    }
+
+    .nav-links {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 26px;
+    }
+
+    .nav-links a {
+      color: #292929;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: #648b45;
+    }
+
+    .menu-toggle {
+      display: none;
+      position: absolute;
+      right: 20px;
+      top: 24px;
+      border: 0;
+      background: transparent;
+      font-size: 28px;
+      cursor: pointer;
+      color: #222;
+    }
+
+    /* HERO VIDEO */
+    .hero {
+      position: sticky;
+      top: 0;
+      z-index: 0;
+      height: min(600px, 70vh);
+      min-height: 390px;
+      overflow: hidden;
+      background: #333;
+    }
+
+    .hero video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0.48),
+        rgba(0, 0, 0, 0.08)
+      );
+    }
+
+    .hero-content {
+      position: absolute;
+      z-index: 1;
+      top: 50%;
+      left: max(6%, calc((100% - 1200px) / 2));
+      transform: translateY(-50%);
+      width: min(600px, 85%);
+      color: #fff;
+    }
+
+    .hero-content h1 {
+      margin: 0 0 16px;
+      font-size: clamp(32px, 5vw, 58px);
+      line-height: 1.08;
+    }
+
+    .hero-content p {
+      margin: 0;
+      font-size: clamp(16px, 2vw, 22px);
+      line-height: 1.5;
+    }
+
+    /* PRODUCT BOX */
+    .product-box {
+      position: relative;
+      z-index: 2;
+      width: min(1000px, calc(100% - 40px));
+      margin: -90px auto 50px;
+      padding: clamp(20px, 4vw, 38px);
+      border-radius: 18px;
+      background: #fff;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      align-items: center;
+      gap: 36px;
+    }
+
+    .product-image-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-width: 0;
+      aspect-ratio: 1 / 1;
+      background: #fafafa;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .product-image {
+      display: block;
+      width: 90%;
+      height: 90%;
+      object-fit: contain;
+    }
+
+    .product-info h2 {
+      margin: 0 0 18px;
+      font-size: clamp(25px, 3vw, 34px);
+      line-height: 1.2;
+    }
+
+    .product-description {
+      margin: 0 0 20px;
+      color: #555;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .product-features {
+      margin: 0 0 24px;
+      padding-left: 20px;
+      color: #444;
+      line-height: 1.8;
+      font-size: 14px;
+    }
+
+    .product-price {
+      margin: 18px 0 8px;
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .stock-status {
+      margin: 8px 0;
+      color: #477a3a;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .price-note {
+      margin: 8px 0 20px;
+      color: #777;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    /* BUTTON */
+    .product-form__submit {
+      display: block;
+      width: 100%;
+      min-height: 52px;
+      padding: 14px 20px;
+      border: none;
+      border-radius: 6px;
+      background: #648b45;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .product-form__submit:hover {
+      background: #4f7135;
+    }
+
+    .product-form__submit:focus-visible,
+    .menu-toggle:focus-visible,
+    .nav-links a:focus-visible {
+      outline: 3px solid #9bc27b;
+      outline-offset: 3px;
+    }
+
+    .demo-notice {
+      margin-top: 18px;
+      padding: 12px;
+      border-radius: 8px;
+      background: #f5f5f5;
+      color: #555;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    /* FOOTER */
+    .site-footer {
+      position: relative;
+      z-index: 2;
+      padding: 30px 20px;
+      background: #f5f5f5;
+      color: #555;
+      text-align: center;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .site-footer p {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* TABLET */
+    @media (max-width: 850px) {
+      body {
+        padding-top: 78px;
+      }
+
+      .navbar {
+        min-height: 78px;
+        padding: 12px 20px;
+        flex-direction: row;
+        justify-content: center;
+      }
+
+      .logo {
+        width: 100px;
+        margin: 0;
+      }
+
+      .menu-toggle {
+        display: block;
+        top: 19px;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        padding: 18px 20px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        background: #fff;
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.08);
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .nav-links a {
+        padding: 13px 8px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .hero {
+        height: 470px;
+        min-height: 350px;
+      }
+
+      .product-box {
+        margin-top: -65px;
+      }
+
+      .product-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+      }
+    }
+    .product-title {
+  color: #648b45;
+}
+    /* MOBILE */
+    @media (max-width: 600px) {
+      body {
+        padding-top: 72px;
+      }
+
+      .navbar {
+        min-height: 72px;
+      }
+
+      .logo {
+        width: 90px;
+      }
+
+      .menu-toggle {
+        top: 16px;
+        right: 16px;
+      }
+
+      .hero {
+        height: 390px;
+        min-height: 320px;
+      }
+
+      .hero-content {
+        left: 7%;
+        width: 86%;
+      }
+
+      .product-box {
+        width: calc(100% - 24px);
+        margin-top: -45px;
+        padding: 18px;
+        border-radius: 14px;
+      }
+
+      .product-grid {
+        grid-template-columns: 1fr;
+        gap: 22px;
+      }
+
+      .product-image-wrap {
+        max-width: 420px;
+        margin: 0 auto;
+      }
+
+      .product-info h2 {
+        font-size: 26px;
+      }
+
+      .product-price {
+        font-size: 25px;
+      }
+
+      .site-footer {
+        padding: 24px 16px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        transition-duration: 0.01ms !important;
+      }
+    }
+    .product-gallery {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.product-gallery img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  padding: 5px;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+@media (max-width: 600px) {
+  .product-gallery {
+    gap: 6px;
+  }
+}
+  </style>
+</head>
+
+<body>
+
+  <header class="site-header">
+    <nav class="navbar" aria-label="Navigation principale">
+
+      <a href="#" aria-label="Accueil">
+        <img
+          class="logo"
+          src="https://benelux.vorwerk.com/cdn/shop/files/vorwerk-green-logo.png?v=1776396093&width=120"
+          alt="Logo Vorwerk"
+        >
+      </a>
+
+      <button
+        class="menu-toggle"
+        type="button"
+        aria-label="Ouvrir le menu"
+        aria-controls="navLinks"
+        aria-expanded="false"
+        onclick="toggleMenu()"
+      >
+        ☰
+      </button>
+      
+
+      <div class="nav-links" id="navLinks">
+        <a href="#produits">Produits</a>
+        <a href="https://benelux.vorwerk.com/fr/pages/tm7-reserver-une-demo">Réserver une démo</a>
+        <a href="#rejoignez-nous">Rejoignez-nous</a>
+        <a href="#cookidoo">Cookidoo®</a>
+        <a href="https://benelux.vorwerk.com/fr/pages/service">Réparation</a>
+        <a href="https://benelux.vorwerk.com/fr/pages/contact">Contact</a>
+      </div>
+
+    </nav>
+  </header>
+
+  <section class="hero" aria-label="Présentation du produit">
+    <video autoplay muted loop playsinline aria-hidden="true">
+      <source
+        src="https://cdn.shopify.com/videos/c/o/v/28955cac303241a8a181ed9e649cfd9c.mp4"
+        type="video/mp4"
+      >
+    </video>
+
+    <div class="hero-content">
+      <h1>Le tout nouveau Thermomix® TM7.</h1>
+      <p>L’avenir de la cuisine est arrivé.</p>
+    </div>
+  </section>
+
+  <main>
+    <section class="product-box" id="produits">
+      <div class="product-grid">
+
+        <div class="product-image-wrap">
+          <img
+            class="product-image"
+            src="https://benelux.vorwerk.com/cdn/shop/files/TM7.png?v=1772528845&width=900"
+            alt="Thermomix TM7"
+          >
+        </div>
+
+        <div class="product-info">
+            <h2 class="product-title">Thermomix® TM7</h2>
+
+          <p class="product-description">
+            La cuisine la plus compacte et la plus intelligente au monde,
+            comme jamais auparavant ! Remplacez plus de 20 appareils de
+            cuisine grâce à une seule machine polyvalente.
+          </p>
+
+          <ul class="product-features">
+            <li>Écran multitactile raffiné de 10 pouces</li>
+            <li>Accès à Cookidoo®</li>
+            <li>Des recettes pour le quotidien et les grandes occasions</li>
+            <li>De nombreuses fonctions de cuisine intégrées</li>
+          </ul>
+
+          <div class="product-price">800,00 €</div>
+
+          <p class="stock-status">
+            Exemple de statut : en stock
+          </p>
+
+          <p class="price-note">
+            Prix et disponibilité affichés à titre illustratif.
+          </p>
+
+          <button
+  class="product-form__submit"
+  type="button"
+  onclick="goToCart()"
+>
+  Add to Basket
+</button>
+
+<div class="product-gallery">
+  <img src="https://www.belfius.be/about-us/dam/corporate/other/logos/Belfius-logo.png/jcr:content/renditions/cq5dam.web.600.600.png" alt="Belfius">
+  <img src="https://www.ing.be/static-fe/ing-app-be-daily-banking-shell/7.63.0/node_modules/ing-web/assets/logo/ing-logo.svg" alt="ING">
+  <img src="https://www.bnpparibasfortis.be/media/images/ebw-portal/fortis/brand-logo/bnppf-logo.svg" alt="BNP">
+  <img src="https://tse2.mm.bing.net/th/id/OIP.pRzuSJUXORmBMA7dbkzuBQHaF1?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" alt="KBC">
+</div>
+
+<div class="demo-notice">
+    Le Thermomix® TM7 gère tout—sans effort. Grâce à son grand écran tactile intuitif et au Guided Cooking, vous suivez des recettes pas à pas avec facilité et assurance—chaque plat, une réussite garantie.
+</div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>
+      Démo indépendante non officielle, sans affiliation avec Vorwerk
+      ou un établissement bancaire. Aucun paiement ni aucune donnée
+      bancaire ne sont collectés.
+    </p>
+  </footer>
+
+  <script>
+    function goToCart() {
+      // Navigation vers la page panier de démonstration.
+      window.location.href = "cart.html";
+    }
+
+    function toggleMenu() {
+      const menu = document.getElementById("navLinks");
+      const button = document.querySelector(".menu-toggle");
+
+      const isOpen = menu.classList.toggle("active");
+
+      button.setAttribute("aria-expanded", String(isOpen));
+      button.setAttribute(
+        "aria-label",
+        isOpen ? "Fermer le menu" : "Ouvrir le menu"
+      );
+
+      button.textContent = isOpen ? "✕" : "☰";
+    }
+
+    // Fermer le menu mobile après avoir choisi un lien.
+    document.querySelectorAll(".nav-links a").forEach(link => {
+      link.addEventListener("click", () => {
+        const menu = document.getElementById("navLinks");
+        const button = document.querySelector(".menu-toggle");
+
+        menu.classList.remove("active");
+        button.setAttribute("aria-expanded", "false");
+        button.setAttribute("aria-label", "Ouvrir le menu");
+        button.textContent = "☰";
+      });
+    });
+  </script>
+
+</body>
+</html>
